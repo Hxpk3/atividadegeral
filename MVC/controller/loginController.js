@@ -17,6 +17,9 @@ module.exports = (app) => {
         res.sendFile(__dirname+"...")
 
     })
+    app.get("/status", async (req, res) =>{
+        res.json({status:true})
+    })
 
 
     // Todos os post

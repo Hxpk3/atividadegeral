@@ -11,5 +11,5 @@ consign()
     .include('MVC/controller')
     .into(app)
 
-app.listen(3000, () => console.log('Online server at port 3000'))
+app.listen(process.env.PORT || 3000, () => console.log('Online server at port 3000'))
 module.exports = app
