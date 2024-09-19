@@ -6,10 +6,10 @@ class DataBaseMySQL {
 
     constructor(){
         this.#connection = mysql.createPool({
-            host: '10.111.4.30',
-            user: 'backend',
-            password: 'B4ckUs$r2024',
-            database: 'controleescolar'
+            host: process.env.host,
+            user: process.env.user,
+            password: process.env.password,
+            database: process.env.database
         }).promise();
     }
 
