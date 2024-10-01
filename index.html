@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Cadastro de Professores</title>
+    <style>
+        body {
+            background-image: url(./assets/background.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-size: 100% 100vh;
+        }
+
+        .form-container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .navbar {
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="./assets/logo.png" alt="Logo" width="100" height="100">
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title">Cadastro de Professores</h2>
+
+            <form id="professorForm">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="disciplina" class="form-label">Disciplina</label>
+                        <select class="form-select" id="disciplina" aria-label="Default select example">
+                            <option value="1">Português</option>
+                            <option value="2">Matemática</option>
+                            <option value="3">Física</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="dt_nascimento" class="form-label">Data de Nascimento</label>
+                        <input type="date" class="form-control" id="dt_nascimento" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rg" class="form-label">RG</label>
+                        <input type="text" class="form-control" id="rg" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endereco" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="endereco" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="especializacao" class="form-label">Especialização</label>
+                        <input type="text" class="form-control" id="especializacao" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="formacao" class="form-label">Formação</label>
+                        <select class="form-select" id="formacao" aria-label="Default select example">
+                            <option value="1">Português</option>
+                            <option value="2">Matemática</option>
+                            <option value="3">Física</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="cadastro" class="form-label">Cadastro do Professor</label>
+                        <select class="form-select" id="cadastro" aria-label="Default select example">
+                            <option value="1">Diego</option>
+                            <option value="2">Karina</option>
+                            <option value="3">Fernando</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+
+            <div id="resultMessage" class="mt-3"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('professorForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const disciplina = document.getElementById('disciplina').value;
+            const cadastro = document.getElementById('cadastro').value;
+            const nome = document.getElementById('nome').value;
+            const dt_nascimento = document.getElementById('dt_nascimento').value;
+            const rg = document.getElementById('rg').value;
+            const cpf = document.getElementById('cpf').value;
+            const endereco = document.getElementById('endereco').value;
+            const especializacao = document.getElementById('especializacao').value;
+            const formacao = document.getElementById('formacao').value;
+
+            const data = {
+                disciplina,
+                cadastro,
+                nome,
+                dt_nascimento,
+                rg,
+                cpf,
+                endereco,
+                especializacao,
+                formacao
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/registrarprofessor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.isAuth) {
+                    document.getElementById('resultMessage').innerHTML = '<div class="alert alert-success">Professor cadastrado com sucesso!</div>';
+                    document.getElementById('professorForm').reset();
+                } else {
+                    document.getElementById('resultMessage').innerHTML = '<div class="alert alert-danger">Erro ao cadastrar professor.</div>';
+                }
+
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultMessage').innerHTML = '<div class="alert alert-danger">Erro ao comunicar com o servidor.</div>';
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>
