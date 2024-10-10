@@ -14,9 +14,25 @@ class DataBaseMySQL {
         }).promise();
     }
 
+    //Consulta de Perfil
+    async SelectPerfil(id) {
+        const query = await this.#connection.query('select * from cadastro_user where id_cadastro =' +id)
+        return query[0]
+    }
+
+    // Login 
     async SelectLogin(email, senha) {
         const query = await this.#connection.query('select * from cadastro_user where email_cadastro =? and senha_cadastro =?',[email, senha])
        return query
+    }
+
+    // Cadastro Professor
+    async addProfessor(param) {
+        const sql = `insert into usuario_grupo (id_usuario, id_grupo)
+        values ('${param.id_user}','${param.id_group}')`  
+        
+        const query = await this.#connection.execute(sql)
+        return query[0]
     }
 }
 
