@@ -111,9 +111,37 @@ class PerfilDAO{
         this.#db = new DataBaseMySQL()
     }
 
+    async consultarTodos(){
+
+        let list_perfil = []
+
+        const query = await this.#db.SelectProfile()
+
+        for (let index = 0; index < query.length; index++) {
+
+            const perfil = new Perfil()
+
+            perfil.id = query[index].id_cadastro
+            perfil.nome = query[index].nome_cadastro
+            perfil.rg = query[index].rg_cadastro
+            perfil.cpf = query[index].cpf_cadastro
+            perfil.email = query[index].email_cadastro
+            perfil.senha = query[index].senha_cadastro
+            perfil.genero = query[index].genero_cadastro
+            perfil.dt_nascimento = query[index].dt_nascimento_cadastro
+            perfil.endereco = query[index].endereco_cadastro
+
+            list_perfil.push(perfil.toJson())     
+        }
+
+
+       
+        return list_perfil
+    }
+
     async consultarUm(id){
 
-        const query = await this.#db.SelectPerfil(id)
+        const query = await this.#db.SelectProfileId(id)
 
         const perfil = new Perfil()
 
@@ -131,6 +159,24 @@ class PerfilDAO{
 
         return perfil.toJson()
     }
+
+    async registerProfile(
+        nome,
+        rg,
+        cpf,
+        email,
+        senha,
+        genero,
+        dt_nascimento,
+        endereco){
+
+         
+            const perfil = new Perfil(nome, rg, cpf, email, senha, genero, dt_nascimento, endereco);
+
+            const sql = await this.#db.addProfile(perfil.toJson())
+
+            return sql.insertId;
+        }
 
 }
 

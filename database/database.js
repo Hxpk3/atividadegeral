@@ -15,8 +15,19 @@ class DataBaseMySQL {
     }
 
     //Consulta de Perfil
-    async SelectPerfil(id) {
+    async SelectProfile() {
+        const query = await this.#connection.query('select * from cadastro_user')
+        return query[0]
+    }
+    async SelectProfileId(id) {
         const query = await this.#connection.query('select * from cadastro_user where id_cadastro =' +id)
+        return query[0]
+    }
+    async addProfile(param) {
+        const sql = `insert into cadastro_user (nome_cadastro, rg_cadastro, cpf_cadastro, email_cadastro, senha_cadastro, genero_cadastro, dt_nascimento_cadastro, endereco_cadastro)
+        values ('${param.nome}','${param.rg}','${param.cpf}','${param.email}','${param.senha}','${param.genero}','${param.dt_nascimento}','${param.endereco}')`  
+        
+        const query = await this.#connection.execute(sql)
         return query[0]
     }
 
