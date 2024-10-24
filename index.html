@@ -28,11 +28,20 @@
         .conteinerButton{
             display: flex;
             flex-direction: row;     
-            align-items: flex-start; 
-                          
+            justify-content: flex-end;            
+        }
+        form{
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
         }
         button{
             width: 200px;
+        }
+        .btn{
+            width: 100px;
         }
         .form-control{
             width: 600px;
@@ -52,8 +61,10 @@
     </header>
 
 
-    <main>
+    <main  class="container mt-4">
         <form>
+            <fieldset class="border p-4 rounded">
+            <legend>Cadastro de Disciplinas</legend>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Disciplina</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
@@ -71,12 +82,9 @@
                     <a href="#">
                         <button type="submit" class="btn btn-primary">SALVAR</button>
                     </a>
-
-                    </a>
                 </div>
             </div>
-
-
+            </fieldset>
 
         </form>
     </main>
