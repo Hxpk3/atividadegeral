@@ -13,9 +13,9 @@ module.exports = (app) => {
         const perfil = new Perfil()
         const status = await perfil.consultarUm(req.params.id) 
         
-        res.json({
-            status
-        })
+        res.json(
+            [{...status}]
+        )
     })
 
     app.get("/status", async (req, res) =>{

@@ -45,6 +45,16 @@ class DataBaseMySQL {
         const query = await this.#connection.execute(sql)
         return query[0]
     }
+
+    // Horario e salas
+    async SelectSala() {
+        const query = await this.#connection.query('select * from sala')
+        return query[0]
+    }
+    async SelectSalaId(id) {
+        const query = await this.#connection.query('select * from sala where id_sala =' +id)
+        return query[0]
+    }
 }
 
 module.exports = DataBaseMySQL
