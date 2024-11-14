@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form id="form-login">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required minlength="6">
+
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-login');
+            
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const email = document.getElementById('email').value.trim();
+                    const senha = document.getElementById('senha').value;
+
+                    // Validações
+                    if (!email) {
+                        alert('Email é obrigatório.');
+                        return;
+                    }
+
+                    if (senha.length < 6) {
+                        alert('Senha deve ter pelo menos 6 caracteres.');
+                        return;
+                    }
+
+                    fetch('/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, senha }),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.message || 'Erro no servidor');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            alert('Login realizado com sucesso!');
+                            window.location.href = '/dashboard'; // Redirecionar para o dashboard
+                        } else {
+                            throw new Error(data.message || 'Erro desconhecido');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro no login:', error);
+                        alert(`Erro no login: ${error.message}`);
+                    });
+                });
+            } else {
+                console.error('Formulário de login não encontrado');
+            }
+        });
+    </script>
+</body>
+</html>

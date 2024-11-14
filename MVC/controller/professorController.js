@@ -9,8 +9,7 @@ module.exports = (app) => {
 
     app.post('/registrarprofessor', async (req, res) => {
             
-    
-        //    console.log(req.body.txtskins)
+  
             const professor = new Professor();
             const { 
                 id_user: id_user,
